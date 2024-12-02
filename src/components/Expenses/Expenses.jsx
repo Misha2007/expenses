@@ -22,7 +22,7 @@ const Expenses = (props) => {
         selected={filteredYear}
         onYearChange={filterYearHandler}
       />
-      <ExpensesList expenses={filteredExpenses} />
+      <ExpensesList expenses={filteredExpenses} isLoading={props.isLoading} />
     </Card>
   );
 };
