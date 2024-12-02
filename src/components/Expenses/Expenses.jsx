@@ -12,9 +12,9 @@ const Expenses = (props) => {
     return setFilteredYear(newYear);
   };
 
-  const filteredExpenses = props.expenses.filter(
-    (expense) => expense.date.getFullYear() === filteredYear
-  );
+  const filteredExpenses = props.expenses.filter((expense) => {
+    return new Date(expense.date).getFullYear() == filteredYear;
+  });
 
   return (
     <Card className="expenses">

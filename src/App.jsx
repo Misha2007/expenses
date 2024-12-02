@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -26,8 +26,15 @@ const DYMMY_EXPENSES = [
   },
 ];
 
-function App() {
-  const [expenses, setExpenses] = useState(DYMMY_EXPENSES);
+const App = () => {
+  const [expenses, setExpenses] = useState(() => {
+    const expensesFromLS = JSON.parse(localStorage.getItem("expenses"));
+    return expensesFromLS || [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+  }, [expenses]);
 
   const addExpenseHandler = (expense) => {
     setExpenses((prevExpenses) => {
@@ -41,6 +48,6 @@ function App() {
       <Expenses expenses={expenses} />
     </div>
   );
-}
+};
 
 export default App;
