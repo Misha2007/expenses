@@ -37,7 +37,7 @@ const App = () => {
     const getExpenses = async () => {
       setIsFetching(true);
       try {
-        const response = await fetch("http://localhost:3005/expensesss");
+        const response = await fetch("http://localhost:3005/expenses");
         const responseData = await response.json();
         if (!response.ok) {
           throw new Error("Failed fetching data");
@@ -66,9 +66,31 @@ const App = () => {
   };
 
   const addExpenseHandler = (expense) => {
-    setExpenses((prevExpenses) => {
-      return [expense, ...prevExpenses];
-    });
+    const addExpense = async (expense) => {
+      try {
+        console.log(JSON.stringify(expense));
+        const response = await fetch("http://localhost:3005/add-expense", {
+          method: "POST",
+          body: JSON.stringify(expense),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log(response);
+        const responseData = await response.json();
+        if (!response.ok) {
+          throw new Error("Failed adding expense");
+        }
+        setExpenses([expense, ...expenses]);
+      } catch (error) {
+        setError({
+          title: "An error occurred",
+          message: "Failed to add expense, please try again later.",
+        });
+        setShowError(true);
+      }
+    };
+    addExpense(expense);
   };
 
   return (
